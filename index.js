@@ -22,4 +22,10 @@ io.on("connection", (socket) => {
     //send  message to all sockets
     io.sockets.emit("chat", data);
   });
+
+  //typing event
+  socket.on("typing", (name) => {
+    //send typing event except that socket (broading)
+    socket.broadcast.emit("typing", name);
+  });
 });

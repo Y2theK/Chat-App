@@ -94,6 +94,7 @@
   <script>
     const socket = io("http://localhost:5000");
     let output = document.getElementById("output");
+    let feedback = document.getElementById("feedback");
     let name = document.getElementById("name");
     let message = document.getElementById("message");
     let send = document.getElementById("send");
@@ -116,6 +117,19 @@
                             : ${data.message}</p>`;
       name.value = "";
       message.value = "";
+      feedback.innerHTML = "";
+    });
+
+    //emit keypress event on message
+    message.addEventListener("keypress", () => {
+      socket.emit("typing", name.value);
+    });
+    // listen typing event
+    socket.on("typing", (name) => {
+      feedback.innerHTML = `<p><em>${name} is typing</em></p>`;
+      setTimeout(() => {
+        feedback.innerHTML = "";
+      }, 3000);
     });
   </script>
 </html>
